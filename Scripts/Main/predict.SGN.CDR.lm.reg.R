@@ -34,11 +34,11 @@ library(mlr3verse);
 library(mlr3);
 setwd('path/to/data/directory/');
 ### PLOT SGN LANDSCAPE ############################################################################
-predict.SGN.CDR.lm.reg <- function(model.num, path.to.unlabelled.csv) {
+predict.SGN.CDR.lm.reg <- function(model.num, path.to.unlabeled.csv) {
 
     ### LOAD DATA #################################################################################
     SGN.data        <- read.delim('Derived/2022-03-21_SGN_ephys_morphology_spreadsheet.txt');
-    unlabelled.data <- read.csv(unlabelled.data.path);
+    unlabeled.data <- read.csv(unlabelled.data.path);
 
     ### FORMAT DATA ###############################################################################
     if (model.num == 1) {
@@ -104,10 +104,10 @@ predict.SGN.CDR.lm.reg <- function(model.num, path.to.unlabelled.csv) {
     autoplot(task, type = 'pairs');
 
     ### PREDICT WELLS #############################################################################
-    contact.predictions <- predict(learner, unlabelled.data[, predictor.features]);
+    contact.predictions <- predict(learner, unlabeled.data[, predictor.features]);
 
     predictions.dataframe <- data.frame(
-        cell.ID = row.names(unlabelled.data),
+        cell.ID = row.names(unlabeled.data),
         Pred.CDR = contact.predictions
         );
 
