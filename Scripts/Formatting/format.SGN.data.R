@@ -6,7 +6,7 @@ setwd('/Users/alex/Library/Mobile Documents/com~apple~CloudDocs/Documents/USC/Py
 format.SGN.data <- function() {
 
     ### LOAD DATA #################################################################################
-    SGN.data <- read.csv('SGN_Spreadsheet.csv');
+    SGN.data <- read.csv('Data/SGN_Spreadsheet.csv');
     ### FORMAT DATA ###############################################################################
     
     # Extract features of interest for landscape plot and analysis
@@ -27,6 +27,7 @@ format.SGN.data <- function() {
         'Code..Rin', 
         'Code..Vthres',
         'Code..Vm',
+        'Outward.Inactivation.Tau',
         'ss.30NC',
         'ssmax_NC',
         'g.30NC',
@@ -53,6 +54,7 @@ format.SGN.data <- function() {
         'AP.Latency.threshold',
         'AHP.tau',
         'Current.Threshold',
+        'Voltage.Threshold',
         'Vm',
         'AP.Height',
         'Rin',
@@ -62,10 +64,11 @@ format.SGN.data <- function() {
         'gmax',
         'Vmid',
         'g30.gmax',
+        'Outward.inactivation.tau',
         'AP.Latency'
         );
     
     ### SAVE FILE #################################################################################
-    write.table(SGN.data, '2022-03-16_SGN_ephys_morphology_spreadsheet.txt', sep = '\t');
+    write.table(SGN.data, 'Derived/2022-03-21_SGN_ephys_morphology_spreadsheet.txt', sep = '\t');
     }
 ### END ###########################################################################################
