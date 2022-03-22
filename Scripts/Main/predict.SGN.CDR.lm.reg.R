@@ -27,14 +27,14 @@
 # An output csv file of predicted CDR will be generated with CellIDs as row names and colname Pred.CDR
 
 # EXAMPLE USAGE
-# predict.SGN.CDR.lm.reg(mode1.num = 1, 'Derived/model1.unlabelled.data.sample.csv')
+# predict.SGN.CDR.lm.reg(model1.num = 1, 'Derived/model1.unlabelled.data.sample.csv')
 
 ### PREAMBLE ######################################################################################
 library(mlr3verse);
 library(mlr3);
-setwd('path/to/data/directory/');
+setwd('/Users/alex/Library/Mobile Documents/com~apple~CloudDocs/Documents/project-SGN-biophysics');
 ### PLOT SGN LANDSCAPE ############################################################################
-predict.SGN.CDR.lm.reg <- function(model.num, path.to.unlabeled.csv) {
+predict.SGN.CDR.lm.reg <- function(model.num, path.to.unlabelled.csv, impute.missing = FALSE) {
 
     ### LOAD DATA #################################################################################
     SGN.data        <- read.delim('Derived/2022-03-21_SGN_ephys_morphology_spreadsheet.txt');
@@ -43,45 +43,47 @@ predict.SGN.CDR.lm.reg <- function(model.num, path.to.unlabeled.csv) {
     ### FORMAT DATA ###############################################################################
     if (model.num == 1) {
 
+        # Subset data for Model 1
         model.features <- c('CDR', 'Current.Threshold', 'gmax', 'Outward.inactivation.tau');
         predictor.features <- c('Current.Threshold', 'gmax', 'Outward.inactivation.tau');
-
-        # Subset data for Model 1 and Impute median values for NAs
-        model.data <- subset(SGN.data, SGN.data$Age >= 3 & SGN.data$Age <=10 & SGN.data$Spike.Type != 'Graded',
-                              select = colnames(SGN.data) %in% model.features);
-        model.data <- model.data[!(is.na(model.data$CDR)),];
-        model.data <- as.data.frame(apply(model.data, 2, function(x) ifelse(is.na(x), median(x, na.rm = TRUE), x)));
+        model.data <- subset(SGN.data, SGN.data$Age >= 3 & SGN.data$Age <=10 & SGN.data$Spike.Type != 'Graded', select = colnames(SGN.data) %in% model.features);
         }
 
     else if (model.num == 2) {
+
+        # Subset data for Model 2
         model.features <- c('CDR', 'AP.Latency.threshold', 'Outward.inactivation.tau');
         predictor.features <- c('AP.Latency.threshold', 'Outward.inactivation.tau');
-        
-
-        # Subset data for Model 2 and Impute median values for NAs
         model.data <- subset(SGN.data, SGN.data$Age >= 3 & SGN.data$Age <=10, select = colnames(SGN.data) %in% model.features);
-        model.data <- model2.data[!(is.na(model.data$CDR)),];
-        model.data <- as.data.frame(apply(model.data, 2, function(x) ifelse(is.na(x), median(x, na.rm = TRUE), x)));
         }
 
     else if (model.num == 3) {
+
+        # Subset data for Model 3
         model.features <- c('CDR', 'AP.Latency.threshold');
         predictor.features <- c('AP.Latency.threshold');
-
-        # Subset data for Model 3 and Impute median values for NAs
         model.data <- subset(SGN.data, SGN.data$Age >= 3 & SGN.data$Age <=5, select = colnames(SGN.data) %in% model.features);
-        model.data <- model3.data[!(is.na(model.data$CDR)),];
-        model.data <- as.data.frame(apply(model.data, 2, function(x) ifelse(is.na(x), median(x, na.rm = TRUE), x)));
         }
 
     else if (model.num == 4) {
+
+        # Subset data for Model 4
         model.features <- c('CDR', 'AP.Latency.threshold');
         predictor.features <- c('AP.Latency.threshold');
-
-        # Subset data for Model 4 and Impute median values for NAs
         model.data <- subset(SGN.data, SGN.data$Age >= 6 & SGN.data$Age <= 8, select = colnames(SGN.data) %in% model.features);
-        model.data <- model4.data[!(is.na(model.data$CDR)),];
-        model.data <- as.data.frame(apply(model.data, 2, function(x) ifelse(is.na(x), median(x, na.rm = TRUE), x)));
+        }
+
+    # Remove rows with missing CDR values
+    model.data <- model.data[!(is.na(model.data$CDR)),];
+
+    # Imputation of missing values
+    if (impute.missing == TRUE) {
+
+        model.data <- as.data.frame(apply(model.data, 2, function(x) ifelse(is.na(x), median(x), x)));
+        }
+    else if (impute.missing == FALSE) {
+
+        model.data <- na.omit(model.data);
         }
 
     ## MACHINE LEARNING ###########################################################################
@@ -96,7 +98,7 @@ predict.SGN.CDR.lm.reg <- function(model.num, path.to.unlabeled.csv) {
     model.results <- data.frame(
         RMSE = rr$aggregate(msr('regr.rmse'))
         );
-    
+
     # RMSE is your best measurement of model accuracy
     cat(paste0('Root mean squared error (RMSE): ', model.results$RMSE));
 
@@ -113,5 +115,6 @@ predict.SGN.CDR.lm.reg <- function(model.num, path.to.unlabeled.csv) {
 
     ### SAVE FILE #################################################################################
     write.csv(predictions.dataframe, paste0(Sys.Date(), '_Predicted.CDR_model.num.', model.num, '.csv'));
+    write.csv(beta.coefficients, paste0(Sys.Date(), '_beta.coefficients.model.num.', model.num, '.csv'))
     }
 ### END ###########################################################################################
