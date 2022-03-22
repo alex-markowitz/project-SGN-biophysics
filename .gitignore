@@ -7,8 +7,8 @@
 .RDataTmp
 
 # macOS/IDE #
-5	.DS_Store
-6	.idea
+.DS_Store
+.idea
 
 # User-specific files
 .Ruserdata
