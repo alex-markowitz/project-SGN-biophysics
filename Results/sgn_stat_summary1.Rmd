@@ -1,0 +1,51 @@
+---
+title: "SGN biophysical properties are associated with its hair cell contact position"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load and format data
+
+Biocytin-labelled SGN were recorded via patch-clamp electrophysical procedures to associate whole-cell biophysical properties of individual SGN with its afferent projection contact position onto inner and outer hair cells.
+
+The following is a data spreadsheet with specimen annotations, morphological, current- and voltage- clamp measurements:
+
+```{r sgn_spreadsheet, echo=TRUE}
+### LOAD DATA #################################################################
+sgn_data <- read.delim(
+    "Derived/2022-03-21_SGN_ephys_morphology_spreadsheet.txt"
+    );
+### FORMAT DATA ###############################################################
+sgn_cc_features <- c("Graded.Index", "Current.Threshold",
+                          "Voltage.Threshold", "Vm", "AP.Height",
+                          "AP.Latency.threshold");
+sgn_vc_features <- c("Peak.Current", "SS.Current", "ss.30", "ss.max", "g.30",
+                     "gmax", "Vmid", "g30.gmax", "Outward.inactivation.tau");
+sgn_animal_info <- c("Age", "MP.Classification", "CDR", "Branch.Number");
+
+cat("Current clamp features:")
+str(sgn_cc_features)
+cat("Voltage clamp features:")
+str(sgn_vc_features)
+```
+```{r, echo=FALSE}
+### FORMAT DATA GROUPS #########################################################
+sgn_data$SGN.Type[sgn_data$SGN.Type == ""]     <- NA;
+sgn_data$Spike.Type[sgn_data$Spike.Type == ""] <- NA;
+
+sgn_data$SGN.Type   <- factor(sgn_data$SGN.Type);
+sgn_data$Spike.Type <- factor(sgn_data$Spike.Type);
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

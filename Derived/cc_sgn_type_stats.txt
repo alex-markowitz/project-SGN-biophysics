@@ -1,0 +1,7 @@
+"feature"	"wilcox.p"	"wilcox.statistic"
+"1"	"Graded.Index"	0.0869940858299116	412
+"2"	"Current.Threshold"	0.39932057928642	262.5
+"3"	"Voltage.Threshold"	0.232034068056896	146.5
+"4"	"Vm"	0.0656920544756012	204.5
+"5"	"AP.Height"	0.978333909164251	288
+"6"	"AP.Latency"	0.250763210549755	199.5

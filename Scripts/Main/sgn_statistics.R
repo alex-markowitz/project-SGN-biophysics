@@ -5,10 +5,9 @@ library(stats);
 library(GGally);
 library(lme4);
 library(plyr);
-setwd('/Users/alex/Library/Mobile Documents/com~apple~CloudDocs/Documents/
-      project-SGN-biophysics');
+setwd('/Users/alex/Library/Mobile\ Documents/com~apple~CloudDocs/Documents/project-SGN-biophysics');
 
-### SGN ANALYS ################################################################
+### SGN ANALYSIS ##############################################################
 ### LOAD DATA #################################################################
 sgn_data <- read.delim(
     "Derived/2022-03-21_SGN_ephys_morphology_spreadsheet.txt"

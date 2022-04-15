@@ -1,0 +1,24 @@
+version: '3.3'
+services:
+
+  jupyter:
+    image:  sgn-biophysics
+    container_name: sgn-biophysics
+    hostname:
+        sgn-biophysics
+    build:
+      context: .
+      dockerfile: azureml.dockerfile
+    ports:
+      - "8888:8888"
+    command:  /bin/bash -c "  /opt/miniconda/bin/conda init bash && jupyter notebook --ip 0.0.0.0 --port 8888 --allow-root --no-browser && /var/opt/jupyter/upload/python main.py && tail -f /dev/null "
+    volumes:
+     - type : bind
+       source: ./sgn-biophysics/
+       target: /var/opt/jupyter/sgn-biophysics/    
+     - type : bind
+       source: ./config.json
+       target: /var/opt/jupyter/config.json
+   
+volumes:
+ localjupvolume:

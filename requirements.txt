@@ -1,0 +1,23 @@
+jupyter
+# libraries required
+azureml.core
+azureml-dataset-runtime
+azureml-defaults
+azureml-mlflow
+azureml.widgets
+azureml-train-automl
+azureml-pipeline-core
+azureml-responsibleai
+azureml-explain-model
+azureml-interpret
+opendp-smartnoise # (preview) smart noise project by MS and Harvard
+#azureml-contrib-fairness # (preview) fairness project by MS and Harvard
+#raiwidgets # used for azureml-contrib-fairness to plot results
+scikit-learn
+matplotlib
+pillow
+requests
+numpy
+pandas
+scikit-image
+scipy
